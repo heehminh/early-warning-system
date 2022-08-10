@@ -14,6 +14,51 @@ class Opening(models.Model):
     title = models.CharField(max_length=100) # 관세청 타이틀
     date = models.DateField()
     url = models.URLField()
+    
+    def __str__(self):
+        return self.title
 
+# 중국
+class ChinaModel(models.Model):
+    title = models.CharField(max_length=100) # 관세청 타이틀
+    date = models.DateField()
+    url = models.URLField()
+    
+    def __str__(self):
+        return self.title
+
+# 미국 
+class USAModel(models.Model):
+    title = models.CharField(max_length=100) # 관세청 타이틀
+    date = models.DateField()
+    url = models.URLField()
+    
+    def __str__(self):
+        return self.title
+
+# 일본
+class JapanModel(models.Model):
+    title = models.CharField(max_length=100) # 관세청 타이틀
+    date = models.DateField()
+    url = models.URLField()
+    
+    def __str__(self):
+        return self.title
+
+# 베트남
+class VtModel(models.Model):
+    title = models.CharField(max_length=100) # 관세청 타이틀
+    date = models.CharField(max_length=20)
+    url = models.URLField()
+    
+    def __str__(self):
+        return self.title
+
+# 호주 
+class AuModel(models.Model):
+    title = models.CharField(max_length=100) # 관세청 타이틀
+    date = models.DateField()
+    url = models.URLField()
+    
     def __str__(self):
         return self.title
