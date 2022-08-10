@@ -10,23 +10,39 @@
         <meta name="author" content="" />
         <title>Dashboard - SB Admin</title>
         <style>
+            #menubar {
+                position: fixed;
+                top: 0;
+                left: 30;
+                right: 0; 
+                display: flex;
+                align-items: center;
+            }
             #menubar ul { 
                 margin : 0;
-                padding : 0;
+                padding : 0px;
+                
             }
             #menubar ul li {
+                margin : 50px 0px;
                 display : inline-block; 
                 list-style-type : none; 
-                padding : 0px 50px; 
+                padding : 50px; 
             }
             #menubar ul li a {
                 color : navy;
+                font-size: 30px;
                 text-decoration : none; 
             }
             #menubar ul li a:hover {
                 color : white;
                 background : navy; 
             }
+            body {
+                padding-top: 100px;
+            }
+            
+            
         </style>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href={% static "warn/css/styles.css" %} rel="stylesheet" />
@@ -38,11 +54,8 @@
             <center>
             <ul>
                 {% for c in countries %}
-                    <li><a href={{c.id}}>{{c.name}}</a></li>
-                    {% comment %} <li><a href="{{c.id}}">미국</a></li>
-                    <li><a href="{{c.id}}">일본</a></li>
-                    <li><a href="{{c.id}}">베트남</a></li>
-                    <li><a href="{{c.id}}">호주</a></li> {% endcomment %}
+                    <!-- url 꼬이는거 해결 -->
+                    <li><a href="http://127.0.0.1:8000/baekho/menu/{{c.id}}">{{c.name}}</a></li>
                 {% endfor %}
             </ul>
             </center>
