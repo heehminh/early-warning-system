@@ -26,9 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
-
-SCHEDULER_DEFAULT = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,10 +35,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'baekho',
     'django_apscheduler',
     'django_celery_beat',
+    'django_crontab',
+    'baekho',
 ]
+
+APSCHEDUER_DATETIME_FORMAT = "N j, Y, f:s a"
+SCHEDULER_DEFAULT = True
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

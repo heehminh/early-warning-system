@@ -8,4 +8,6 @@ urlpatterns = [
 
     # path('menu/', views.index),
     path('menu/<int:pk>/', views.baekho_detail),
+    path('menu/<int:pk>/<int:title>', views.subpage),
+
 ]

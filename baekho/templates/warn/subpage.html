@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <title>페이지 2</title>
+        <style>
+            body {
+                padding: 150px;
+                padding-top: 100px;
+            }
+
+            td, th {
+                text-align: left;
+                padding: 5px;
+                height: 15px;
+            }
+
+            thead {
+                background: navy;
+                color: white;
+            }
+
+            td {
+                border-bottom: 1px solid gray;
+                word-break: break-all;
+            }
+                 
+
+        </style>
+        
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href={% static "warn/css/styles.css" %} rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
+    </head>
+            
+
+    <div>
+        <body> 
+            <h3> <a href="{{info.url}}", target="_blank"> {{info.title}} </a> </h3>
+            {{info.date}}  
+
+            <div class="row" style="padding-top: 30px">
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <center> <h4> 요약본 </h4> </center>
+                            
+                        </div>
+                        <p style="padding:15px">
+                            ~ 요약본 적는칸 ~ 
+                        </p>
+                       
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <center> <h4> 관련산업군 </h4> </center>
+                        </div>
+                        <div "card-body">
+                            <table id="datatablesSimple" width="90%" style="margin-left: auto; margin-right: auto;">
+                                <br>
+                                <thead>
+                                    <tr><th scope="col">hscode</th><th scope="col">name</th><th scope="col">KSIC10</th><th scope="col">name</th></tr>
+                                </thead>
+                                <tbody>
+
+                                    <colgroup>
+                                        <col style = "width:20%">
+                                        <col style = "width:30%">
+                                        <col style = "width:20%">
+                                        <col style = "width:30%">
+                                    </colgroup>
+                                    
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+
+                                </tbody>
+
+                            </table>
+
+                            <br>
+
+                                
+                    </div>
+                </div>
+                <div class="col-xl-60">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <center> <h4> 워드클라우드 </h4> </center>
+                        </div>
+                        <div "card-body">
+                            <p style="padding:15px">
+                               ~ 워드 클라우드 이미지 넣기 ~ 
+                            </p>
+
+                                
+                    </div>
+                </div>
+            </div>
+
+        </body>
+
+    </div>
+    
+</html>

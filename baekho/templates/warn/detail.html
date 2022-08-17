@@ -8,26 +8,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+
+        <title>코트라 백호</title>
         <style>
-            #menubar {
-                position: fixed;
-                top: 0;
-                display: flex;
-                align-items: center;
-                left: 30;
-                right: 0;
-            }
+            
             #menubar ul { 
                 margin : 0;
-                padding : 0px;
-                
+                padding : 0px;  
             }
             #menubar ul li {
-                margin : 50px 0px;
+                margin : 0px;
                 display : inline-block; 
                 list-style-type : none; 
-                padding : 50px; 
+                padding : 30px; 
+
             }
             #menubar ul li a {
                 color : navy;
@@ -38,18 +32,46 @@
                 color : white;
                 background : navy; 
             }
-            body {
-                padding-top: 100px;
+
+            div#right-box {
+                float: right;
             }
-            
-            
+            body {
+                padding: 150px;
+                padding-top: 30px;
+                
+            }
+            div#info {
+                display: inline-block;
+
+                
+            }         
+
+            td, th {
+                text-align: left;
+                padding: 5px;
+                height: 15px;
+                
+            }
+            thead {
+                background: navy; 
+                color: white;
+            }
+            td {
+                border-bottom: 1px solid gray;
+                word-break: break-all;
+            }
+
         </style>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href={% static "warn/css/styles.css" %} rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
-    <body class="sb-nav-fixed">
+            
 
+    <div>
+    <body >
+        
         <nav id="menubar">
             <center>
             <ul>
@@ -60,76 +82,20 @@
             </ul>
             </center>
         </nav> 
+
+    
         <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                
-            </div>
+            
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">{{country.name}}</h1>
+                        <h1 class="mt-4">{{country.name}} <a href="url"><img src="{{country.img_path}}" border="0" width="66px" height="44px" style="margin:10px"></a> </h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">{{country.name_eng}}</li>
                         </ol>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Area Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4">
+
+
+                        <div class="card mb-4", id="info">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 최근 고시정보
@@ -138,10 +104,46 @@
                                 <table id="datatablesSimple">
                                     <ul>
                                         {% for o in opening %}
-                                            <li><a href="{{o.url}}">{{o.title}}</a></li>
+                                            <li><a href="{{o.number}}">{{o.title}}</a><div id="right-box">{{o.date}}</div> </li>
+                                            <br>
+                                            
+                                            <table width="100%" style="margin-left: auto; margin-right: auto;" >
+                                                <thead>
+                                                    <tr><th scope="col">bigram</th><th scope="col">hscode</th><th scope="col">name</th><th scope="col">sim</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                    <colgroup>
+                                                        <col style = "width:30%">
+                                                        <col style = "width:8%">
+                                                        <col style = "width:47%">
+                                                        <col style = "width:15%">
+                                                    </colgroup>
+
+                                                        <tr><td></td></tr>
+                                                        
+                                                        <tr><td>{{o.word1_ngram}}</td><td>{{o.word1_code}}</td><td>{{o.word1_name}}</td><td>{{o.word1_sim}}</td></tr>
+                                                        <tr><td>{{o.word2_ngram}}</td><td>{{o.word2_code}}</td><td>{{o.word2_name}}</td><td>{{o.word2_sim}}</td></tr>
+                                                        <tr><td>{{o.word3_ngram}}</td><td>{{o.word3_code}}</td><td>{{o.word3_name}}</td><td>{{o.word3_sim}}</td></tr>
+                                                        <tr><td>{{o.word4_ngram}}</td><td>{{o.word4_code}}</td><td>{{o.word4_name}}</td><td>{{o.word4_sim}}</td></tr>
+                                                        
+                                                        <!--
+                                                        <tr><td>offering sale transportation</td><td>8704</td><td>Motor vehicles for the transport of goods.Motor vehicles for the transport of goods.Motor vehicles for the transport of goods.image.png</td><td>0.587097</td></tr>
+                                                        <tr><td>offering sale transportation</td><td>8704</td><td>Motor vehicles for the transport of goods.</td><td>0.587097</td></tr>
+                                                        <tr><td>offering sale transportation</td><td>8704</td><td>Motor vehicles for the transport of goods.</td><td>0.587097</td></tr>
+                                                        <tr><td>offering sale transportation</td><td>8704</td><td>Motor vehicles for the transport of goods.</td><td>0.587097</td></tr>
+                                                        <tr><td>offering sale transportation</td><td>8704</td><td>Motor vehicles for the transport of goods.</td><td>0.587097</td></tr>
+                                                        -->
+
+                                                    </tbody>         
+                                                
+                                            </table>
+                             
+                                            <hr>
                                         {% endfor %}
                                     </ul>
                                 </table>
+                                
                             </div>
                         </div>
                     </div>
@@ -168,4 +170,5 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
     </body>
+</div>
 </html>
