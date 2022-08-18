@@ -13,7 +13,7 @@
         <style>
             body {
                 padding: 150px;
-                padding-top: 100px;
+                padding-top: 50px;
             }
 
             td, th {
@@ -34,6 +34,16 @@
                  
 
         </style>
+
+        <script type="text/javascript">
+            function toKo() {
+                document.getElementById("summary").innerHTML = "{{info.txt}}";
+            }
+
+            function toEn() {
+                document.getElementById("summary").innerHTML = "{{info.txt_eng}}";
+            }
+        </script>
         
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href={% static "warn/css/styles.css" %} rel="stylesheet" />
@@ -50,12 +60,14 @@
             <div class="row" style="padding-top: 30px">
                 <div class="col-xl-6">
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <center> <h4> 요약본 </h4> </center>
+                        <div class="card-header" >
+                            <h3 style="padding: 5px">요약본 </h3>
+                            <input type="button" value="영어" onclick="toEn()" style="float:right"/>
+                            <input type="button" value="한국어" onclick="toKo()"  style="float:right; margin-right: 20px;"/>
                             
                         </div>
-                        <p style="padding:15px">
-                            ~ 확인용 ~ 
+                        <p id="summary" style="padding:15px; font-size: 24px; overflow: auto; height: 457.5px">
+                            {{info.txt}} 
                         </p>
                        
                     </div>
@@ -63,10 +75,22 @@
                 <div class="col-xl-6">
                     <div class="card mb-4">
                         <div class="card-header">
-                            <center> <h4> 관련산업군 </h4> </center>
+                            <h3 style="padding: 5px"> 워드클라우드 </h3> 
                         </div>
                         <div "card-body">
-                            <table id="datatablesSimple" width="90%" style="margin-left: auto; margin-right: auto;">
+                            <center> <img src="{{info.img}}" style="padding: 20px" width="90%" border="0" /> </center>
+
+                                
+                    </div>
+                </div>
+                <div class="col-xl-60">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3 style="padding: 5px"> 관련산업군 </h3>
+                        </div>
+                        <div "card-body">
+                            <div style="overflow:auto; height: 250px;">
+                            <table id="datatablesSimple" style="width: 95%; margin-left: auto; margin-right: auto; ">
                                 <br>
                                 <thead>
                                     <tr><th scope="col">hscode</th><th scope="col">name</th><th scope="col">KSIC10</th><th scope="col">name</th></tr>
@@ -83,27 +107,35 @@
                                     <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
                                     <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
                                     <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
+                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
 
                                 </tbody>
 
                             </table>
+                            </div>
 
                             <br>
 
                                 
                     </div>
                 </div>
-                <div class="col-xl-60">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <center> <h4> 워드클라우드 </h4> </center>
-                        </div>
-                        <div "card-body">
-                            <center> <img src="{{info.img}}" style="padding: 20px" width="90%" border="0" /> </center>
-
-                                
-                    </div>
-                </div>
+                
             </div>
 
         </body>

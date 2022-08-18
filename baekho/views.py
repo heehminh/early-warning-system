@@ -75,63 +75,90 @@ def baekho_detail(request, pk):
             next(reader, None)
             list = []
             cnt = 0
+
+
+            # 검출된 것이 없음 = "['None']" len(1)
+            #["obej", " "]
+            # 검출된 것이 하나 이상 = "['Obej', 'Obej', 'Obej']"
+
+            # str_to_list 거치면 어떻게 되느냐
+            # -> ['None']
+            # -> ['Obej', 'Obej', 'Obej']
+            def str_to_list(txt):
+                ret = []
+                tmp = txt.replace('[', '').replace(']', '').replace(" '", '||').replace("'", '').split(',||')
+                for t in tmp:
+                    ret.append(t)
+
+                while True:
+                    if len(ret) < 5:
+                        ret.append(' ')
+                    else:
+                        break
+                return ret
+
             for row in reader:
                 cnt += 1
                 
                 print(row[0]+"번째 출력\n")
 
-                ngram_list = row[7].split("||")
-                code_list = row[8].split("||")
-                name_list = row[9].split("||")
-                sim_list = row[10].split("||")
+                # ngram_list = row[7].split("||")
+                # code_list = row[8].split("||")
+                # name_list = row[9].split("||")
+                # sim_list = row[10].split("||")
 
-                print("==데이터전처리전==")        
-                print("ngram_list:",ngram_list)
-                print("code_list:",code_list)
-                print("name_list:",name_list)
-                print("sim_list:",sim_list)
+                ngram_list = str_to_list(row[7])
+                code_list = str_to_list(row[8])
+                name_list = str_to_list(row[9])
+                sim_list = str_to_list(row[10])
 
-                if len(ngram_list) == 1:
-                    ngram_list[0] = "NaN"
-                    code_list[0] = "NaN"
-                    name_list[0] = "NaN"
-                    sim_list[0] = "NaN"
+                # print("==데이터전처리전==")        
+                # print("ngram_list:",ngram_list)
+                # print("code_list:",code_list)
+                # print("name_list:",name_list)
+                # print("sim_list:",sim_list)
 
-                    for i in range(3):
-                        ngram_list.append(" ")
-                        code_list.append(" ")
-                        name_list.append(" ")
-                        sim_list.append(" ")
+                # if len(ngram_list) == 1:
+                #     # ngram_list[0] = "NaN"
+                #     # code_list[0] = "NaN"
+                #     # name_list[0] = "NaN"
+                #     # sim_list[0] = "NaN"
+
+                #     for i in range(3):
+                #         ngram_list.append(" ")
+                #         code_list.append(" ")
+                #         name_list.append(" ")
+                #         sim_list.append(" ")
                 
 
-                elif len(ngram_list) == 2:
-                    ngram_list[1] = ""
-                    code_list[1] = ""
-                    name_list[1] = ""
-                    sim_list[1] = ""
+                # elif len(ngram_list) == 2:
+                #     ngram_list[1] = ""
+                #     code_list[1] = ""
+                #     name_list[1] = ""
+                #     sim_list[1] = ""
 
-                    for i in range(2):
-                        ngram_list.append(" ")
-                        code_list.append(" ")
-                        name_list.append(" ")
-                        sim_list.append(" ")
+                #     for i in range(2):
+                #         ngram_list.append(" ")
+                #         code_list.append(" ")
+                #         name_list.append(" ")
+                #         sim_list.append(" ")
 
-                elif len(ngram_list) == 3:
-                    ngram_list[2] = ""
-                    code_list[2] = ""
-                    name_list[2] = ""
-                    sim_list[2] = ""
+                # elif len(ngram_list) == 3:
+                #     ngram_list[2] = ""
+                #     code_list[2] = ""
+                #     name_list[2] = ""
+                #     sim_list[2] = ""
 
-                    ngram_list.append(" ")
-                    code_list.append(" ")
-                    name_list.append(" ")
-                    sim_list.append(" ")
+                #     ngram_list.append(" ")
+                #     code_list.append(" ")
+                #     name_list.append(" ")
+                #     sim_list.append(" ")
                         
-                elif len(ngram_list) == 4:
-                    ngram_list[3] = ""
-                    code_list[3] = ""
-                    name_list[3] = ""
-                    sim_list[3] = ""
+                # elif len(ngram_list) == 4:
+                #     ngram_list[3] = ""
+                #     code_list[3] = ""
+                #     name_list[3] = ""
+                #     sim_list[3] = ""
 
                 print("==데이터전처리후==")
                 print("ngram_list:",ngram_list)
@@ -167,11 +194,10 @@ def baekho_detail(request, pk):
                                     word4_code=code_list[3],
                                     word4_name=name_list[3],
                                     word4_sim=sim_list[3],
-        
-                                    ))
-
-        
                                     
+                                    txt_eng = row[13],
+                                    txt = row[14],
+                                    ))                        
             HeadOffice.objects.bulk_create(list)
 
             opening = HeadOffice.objects.all()
@@ -185,7 +211,7 @@ def baekho_detail(request, pk):
         country = "중국"
 
     elif (pk==2): # 미국
-        CSV_PATH = usa()
+        CSV_PATH = japan()
         # CSV_PATH = "result_cn.csv.part"
         country = "미국"
         
@@ -195,12 +221,12 @@ def baekho_detail(request, pk):
         country = "일본"
 
     elif (pk==4): # 베트남 
-        # CSV_PATH = vietnam()
+        #CSV_PATH = "../baekho/" + vietnam()
         CSV_PATH = "../baekho/result_vi.csv"   
         country = "베트남" 
 
     elif (pk==5): # 호주 
-        # CSV_PATH = "../baekho/"/australia()
+        #CSV_PATH = "../baekho/" + australia()
         CSV_PATH = "../baekho/result_au.csv"
         country = "호주"
     
@@ -223,9 +249,10 @@ def vietnam():
     # cn_sw = origin_sw + ['china','chinese','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
     vt_sw = origin_sw + ['deputy', 'documents','minister','committee','committe','nguyen','vietnam','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
     model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    data = pd.read_excel('../hs_vt_eng.xlsx')
-    data['hs_embedding'] = data.apply(lambda row: model.encode(row.subject), axis = 1) #hs품목
-
+    # data = pd.read_excel('../hs_vt_eng.xlsx')
+    # data['hs_embedding'] = data.apply(lambda row: model.encode(row.subject), axis = 1) #hs품목
+    with open('hs_embedded_vi.pkl', 'rb') as f: #개체의 특성을 피클모델이 이용할 수 있는 객체를 담아낸것
+        data = pickle.load(f)
     ##############################################################
     ## 함수 정의
     ##############################################################
@@ -247,7 +274,7 @@ def vietnam():
         for ngram in ngrams:
             old, new = 0, 0
             tmp = model.encode(ngram) #영어내용 단어 별보 백터값 추출
-            for a,b,c in zip(data['hs_embedding'], data['subject'], data['number']):
+            for a,b,c in zip(data['hs_embedding'], data['SUBJECT'], data['HSCODE']):
                 row= []
                 new = cos_sim(a, tmp)
                 if old < new and new > thresh:
@@ -423,34 +450,60 @@ def vietnam():
     ## 키워드 hscode 비교 파트
     ##############################################################
 
-    print("======키워드 hscode 비교 시작=====")
-    ngrams, codes, names, sims = [],[],[],[] #ngrams: 3개 단어, codes:hs코드, names:hs품목명, sim:유사도
-    for c in contents_tr:
-        txt = generate_N_grams(c,2,vt_sw) ##영어전체내용 불용어제거 후 단어별로 나눔
+    ngrams, codes, names, sims = [],[],[],[]
+    for c in contents:
+        c = rid_sc(c)
+        txt = generate_N_grams(c,2,vt_sw)
         ls = get_score(txt, data, 0.6)
-        a,b,c,d = '','','',''
+        a,b,c,d = [],[],[],[]
         for ng, co, na, si in zip(ls.ngram,ls.code,ls.name,ls.sim):
             if ng:
-                a += ng + '||'
-                if len(co) == 3:
+                if len(co) == 5:
                     co = '0' + co
-                b += co + '||'        
-                c += na + '||'        
-                d += si + '||'  
+                a.append(ng)
+                b.append(co)
+                c.append(na)
+                d.append(si)
             else:
-                a,b,c,d = ' ',' ',' ',' '
-        while True:
-            if 'None||' in a:
-                a = a.strip('None||')
-                b = b.strip('None||')
-                c = c.strip('None||')
-                d = d.strip('an||')
-            else:
-                break
+                continue
+        if len(a) == 0:
+            a.append('None')
+            b.append('None')
+            c.append('None')
+            d.append('None')
         ngrams.append(a)
         codes.append(b)    
         names.append(c)    
         sims.append(d)
+
+    # print("======키워드 hscode 비교 시작=====")
+    # ngrams, codes, names, sims = [],[],[],[] #ngrams: 3개 단어, codes:hs코드, names:hs품목명, sim:유사도
+    # for c in contents_tr:
+    #     txt = generate_N_grams(c,2,vt_sw) ##영어전체내용 불용어제거 후 단어별로 나눔
+    #     ls = get_score(txt, data, 0.6)
+    #     a,b,c,d = '','','',''
+    #     for ng, co, na, si in zip(ls.ngram,ls.code,ls.name,ls.sim):
+    #         if ng:
+    #             a += ng + '||'
+    #             if len(co) == 3:
+    #                 co = '0' + co
+    #             b += co + '||'        
+    #             c += na + '||'        
+    #             d += si + '||'  
+    #         else:
+    #             a,b,c,d = ' ',' ',' ',' '
+    #     while True:
+    #         if 'None||' in a:
+    #             a = a.strip('None||')
+    #             b = b.strip('None||')
+    #             c = c.strip('None||')
+    #             d = d.strip('an||')
+    #         else:
+    #             break
+    #     ngrams.append(a)
+    #     codes.append(b)    
+    #     names.append(c)    
+    #     sims.append(d)
 
     ##############################################################
     ##찐 hscode 검출 파트
@@ -484,34 +537,20 @@ def vietnam():
     return path
 
 def china():
-
-    from selenium import webdriver
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.common.keys import Keys
-    from selenium.webdriver.chrome.service import Service
-    from bs4 import BeautifulSoup as bs
-    from googletrans import Translator
-    from sentence_transformers import SentenceTransformer
-    import re
-    import pandas as pd
-    import numpy as np
-    from numpy import dot
-    from numpy.linalg import norm
-    import nltk
-    from nltk.corpus import stopwords
-
     ##############################################################
     ## 필요한 것들 미리 정의
     ##############################################################
 
     nltk.download('stopwords')
     origin_sw = stopwords.words('english')
-    # cn_sw = origin_sw + ['china','chinese','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
-    vt_sw = origin_sw + ['deputy', 'documents','minister','committee','committe','nguyen','vietnam','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
+    cn_sw = origin_sw + ['china','chinese','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
+    #vt_sw = origin_sw + ['deputy', 'documents','minister','committee','committe','nguyen','vietnam','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
     model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    data1 = pd.read_excel('../hs_china.xlsx')
-    data = data1.loc[:,"number":"subject"]
-    data['hs_embedding'] = data.apply(lambda row: model.encode(row.subject), axis = 1) #hs품목 
+    with open('hs_embedded_cn.pkl', 'rb') as f: #개체의 특성을 피클모델이 이용할 수 있는 객체를 담아낸것
+        data = pickle.load(f)
+    # data1 = pd.read_excel('../hs_china.xlsx')
+    # data = data1.loc[:,"number":"subject"]
+    # data['hs_embedding'] = data.apply(lambda row: model.encode(row.subject), axis = 1) #hs품목 
     #data = pd.read_excel('../hscode/hscode.xlsx')
 
     ##############################################################
@@ -535,7 +574,7 @@ def china():
         for ngram in ngrams:
             old, new = 0, 0
             tmp = model.encode(ngram) #영어내용 단어 별보 백터값 추출
-            for a,b,c in zip(data['hs_embedding'], data['subject'], data['number']):
+            for a,b,c in zip(data['hs_embedding'], data['SUBJECT'], data['HSCODE']):
                 row= []
                 new = cos_sim(a, tmp)
                 if old < new and new > thresh:
@@ -710,7 +749,7 @@ def china():
     for t in contents_tr:
         k = []
         p = re.sub(r"[^a-zA-Z ]","",t) #영어랑 띄어쓰기만 살리고 나머지 특수기호 등 다 제거
-        keywords = kw_model.extract_keywords(p, keyphrase_ngram_range=(3,3), stop_words=set(vt_sw), top_n=10, diversity=0.9, use_mmr=True) #트라이그램 유사도 상위 10개 품목
+        keywords = kw_model.extract_keywords(p, keyphrase_ngram_range=(3,3), stop_words=set(cn_sw), top_n=10, diversity=0.9, use_mmr=True) #트라이그램 유사도 상위 10개 품목
         for keyword in keywords:
             k.append(keyword[0])
         keywords_list.append(k)
@@ -719,39 +758,65 @@ def china():
     ## 키워드 hscode 비교 파트
     ##############################################################
 
-    ngrams, codes, names, sims = [],[],[],[] #ngrams: 3개 단어, codes:hs코드, names:hs품목명, sim:유사도
-    for c in contents_tr:
-        txt = generate_N_grams(c,2,vt_sw) ##영어전체내용 불용어제거 후 단어별로 나눔
+    ngrams, codes, names, sims = [],[],[],[]
+    for c in contents:
+        c = rid_sc(c)
+        txt = generate_N_grams(c,2,cn_sw)
         ls = get_score(txt, data, 0.6)
-        a,b,c,d = '','','',''
+        a,b,c,d = [],[],[],[]
         for ng, co, na, si in zip(ls.ngram,ls.code,ls.name,ls.sim):
             if ng:
-                a += ng + '||'
-                if len(co) == 3:
+                if len(co) == 5:
                     co = '0' + co
-                b += co + '||'        
-                c += na + '||'        
-                d += si + '||'  
+                a.append(ng)
+                b.append(co)
+                c.append(na)
+                d.append(si)
             else:
-                a,b,c,d = ' ',' ',' ',' '
-
-        while True:
-            if 'None||' in a:
-                a = a.strip('None||')
-                b = b.strip('None||')
-                c = c.strip('None||')
-                d = d.strip('an||')
-            else:
-                break
-        a += '|| '
-        b += '|| '
-        c += '|| '
-        d += '|| '
-
+                continue
+        if len(a) == 0:
+            a.append('None')
+            b.append('None')
+            c.append('None')
+            d.append('None')
         ngrams.append(a)
-        codes.append(b)
-        names.append(c)
+        codes.append(b)    
+        names.append(c)    
         sims.append(d)
+
+    # ngrams, codes, names, sims = [],[],[],[] #ngrams: 3개 단어, codes:hs코드, names:hs품목명, sim:유사도
+    # for c in contents_tr:
+    #     txt = generate_N_grams(c,2,cn_sw) ##영어전체내용 불용어제거 후 단어별로 나눔
+    #     ls = get_score(txt, data, 0.6)
+    #     a,b,c,d = '','','',''
+    #     for ng, co, na, si in zip(ls.ngram,ls.code,ls.name,ls.sim):
+    #         if ng:
+    #             a += ng + '||'
+    #             if len(co) == 3:
+    #                 co = '0' + co
+    #             b += co + '||'        
+    #             c += na + '||'        
+    #             d += si + '||'  
+    #         else:
+    #             a,b,c,d = ' ',' ',' ',' '
+
+    #     while True:
+    #         if 'None||' in a:
+    #             a = a.strip('None||')
+    #             b = b.strip('None||')
+    #             c = c.strip('None||')
+    #             d = d.strip('an||')
+    #         else:
+    #             break
+    #     a += '|| '
+    #     b += '|| '
+    #     c += '|| '
+    #     d += '|| '
+
+    #     ngrams.append(a)
+    #     codes.append(b)
+    #     names.append(c)
+    #     sims.append(d)
 
     #ngrams.append(a)
     #ngrams.append('/ ')
@@ -784,10 +849,12 @@ def china():
         rows.append(row)
 
     result = pd.DataFrame(rows, columns=['번호','제목','제목(한국어번역)','날짜','내용','내용(영어번역)','키워드 요약','일치 키워드','hs코드','품목','유사도','본문에 진짜 코드','링크'])
-
+                                        #번호','제목','제목(한국어번역)','날짜','내용','내용(영어번역)','키워드 요약','일치 키워드','hs코드','품목','유사도','본문에 진짜 코드','링크','요약본(영어)','요약본(한국어)'
     result.to_csv('./result_cn.csv', index=False)
 
     print('done')
+
+    return "result_cn.csv"
 
 def japan():
     return 
@@ -809,7 +876,7 @@ def australia():
 
     # data의 pkl화 된 데이터프레임 미리 로딩
     # 아래 path를 바꿔주면 거기서 로드할수 있음
-    with open('hs_embedded.pkl', 'rb') as f: #개체의 특성을 피클모델이 이용할 수 있는 객체를 담아낸것
+    with open('hs_embedded_au.pkl', 'rb') as f: #개체의 특성을 피클모델이 이용할 수 있는 객체를 담아낸것
         data = pickle.load(f)
     
     ######################################################
@@ -1011,7 +1078,37 @@ def australia():
                 k += tmp + ' '
         cloud = WordCloud(prefer_horizontal=1,background_color='white',width=1200, height=200).generate(k)
         cloud.to_file('./baekho/static/warn/image/'+"호주-au"+str(i+1)+'.png')
+    ##############################################################
+    ## 키워드 hscode 비교 파트
+    ##############################################################
+    print('find goods...')
 
+    ngrams, codes, names, sims = [],[],[],[]
+    for c in contents:
+        c = rid_sc(c)
+        txt = generate_N_grams(c,2,au_sw)
+        ls = get_score(txt, data, 0.6)
+        a,b,c,d = [],[],[],[]
+        for ng, co, na, si in zip(ls.ngram,ls.code,ls.name,ls.sim):
+            if ng:
+                if len(co) == 5:
+                    co = '0' + co
+                a.append(ng)
+                b.append(co)
+                c.append(na)
+                d.append(si)
+            else:
+                continue
+        if len(a) == 0:
+            a.append('None')
+            b.append('None')
+            c.append('None')
+            d.append('None')
+        ngrams.append(a)
+        codes.append(b)    
+        names.append(c)    
+        sims.append(d)
+    '''
     ##############################################################
     ## 키워드 hscode 비교 파트
     ##############################################################
@@ -1026,7 +1123,7 @@ def australia():
         for ng, co, na, si in zip(ls.ngram,ls.code,ls.name,ls.sim):
             if ng:
                 a += ng + '||'
-                if len(co) == 3:
+                if len(co) == 5: #hs코드 4단위에서 6단위로 바뀜에 따라 변경
                     co = '0' + co
                 b += co + '||'        
                 c += na + '||'        
@@ -1050,6 +1147,7 @@ def australia():
         codes.append(b)    
         names.append(c)    
         sims.append(d)
+    '''
     
     ##############################################################
     ##찐 hscode 검출 파트
