@@ -1,6 +1,7 @@
 #from tkinter.filedialog import Open
 from ast import Subscript
 from asyncio import Handle
+from itertools import count
 import numbers
 #from curses.ascii import VT
 from django.shortcuts import render
@@ -37,6 +38,14 @@ import warnings
 import pickle
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer
+import os
+
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from collections import Counter
+from konlpy.tag import Okt
+from PIL import Image
+from keybert import KeyBERT
 
 def update_csv():
     # 원래 csv 삭제하고 새로 
@@ -57,7 +66,7 @@ def baekho_detail(request, pk):
     now = datetime.datetime.now()
     print("======현재시간:",now,"=====")
 
-    def make_context(CSV_PATH):
+    def make_context(CSV_PATH, name):
             records = HeadOffice.objects.all()
             records.delete()
 
@@ -136,6 +145,8 @@ def baekho_detail(request, pk):
                                     title=row[2],
                                     date=row[3], 
                                     url=row[12],
+                                    img="/static/warn/image/"+str(name)+"-au"+str(cnt)+".png",
+                                    country=name,
                                     
                                     word1_ngram=ngram_list[0], 
                                     word1_code=code_list[0],
@@ -171,24 +182,29 @@ def baekho_detail(request, pk):
     if (pk==1): # 중국
         #CSV_PATH = china()
         CSV_PATH = "../baekho/result_cn.csv" 
+        country = "중국"
 
     elif (pk==2): # 미국
         CSV_PATH = usa()
         # CSV_PATH = "result_cn.csv.part"
+        country = "미국"
         
     elif (pk==3): # 일본
         CSV_PATH = japan()
         # CSV_PATH = 
+        country = "일본"
 
     elif (pk==4): # 베트남 
         # CSV_PATH = vietnam()
-        CSV_PATH = "../baekho/result_vi.csv"    
+        CSV_PATH = "../baekho/result_vi.csv"   
+        country = "베트남" 
 
     elif (pk==5): # 호주 
-        CSV_PATH = "../baekho/"+australia()
-        #CSV_PATH = "../baekho/result_au.csv"
+        # CSV_PATH = "../baekho/"/australia()
+        CSV_PATH = "../baekho/result_au.csv"
+        country = "호주"
     
-    make_context(CSV_PATH)
+    make_context(CSV_PATH, country)
 
     return render(request, 'warn/detail.html', context=context)
 
@@ -292,114 +308,24 @@ def vietnam():
                 ls.remove('none')
         return ls
 
-    ##############################################################
-    ## 크롤링 파트
-    ##############################################################
+    def make_dates_vi(txt):
+        splited_txt = txt.split(' ')[0].split('/')
+        ret=''
+        if splited_txt[0].startswith('0'):
+            splited_txt[0] = splited_txt[0][1:]
 
-    # chrome_driver_path = 'C:\py_temp/chromedriver.exe'
+        if splited_txt[1].startswith('0'):
+            splited_txt[1] = splited_txt[1][1:]
 
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument("--single-process")
-    # chrome_options.add_argument("--disable-dev-shm-usage")
-
-    # driver = webdriver.Chrome(chrome_driver_path,chrome_options=chrome_options)
-
-    # # driver = webdriver.Chrome(chrome_driver_path, options=options)
-
-    # base_url = 'https://www.customs.gov.vn' #합격
-    # # https://pythondocs.net/selenium/%EC%85%80%EB%A0%88%EB%8B%88%EC%9B%80-wait-%EA%B0%9C%EB%85%90-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-implicitly-wait-vs-explicitly-wait/
-    # # 타입슬립 종류 주는법
-
-    # try:
-    #     driver.get(base_url+'/index.jsp?pageId=4&cid=30')
-    #     driver.maximize_window()
-    #     WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div[2]/section[2]/div/div[1]/div[2]/div[1]/div[1]/div/module/div[1]")))
-    # except Exception as e:
-    #     print(e)
-
-    # html = driver.page_source
-    # soup = bs(html, 'html.parser')
-    # list = soup.find('div', 'content-list module-content content-yellow content-page').find_all('div','content_item')
-
-    # title2, bdate2, contents2, url2 = [],[],[], []
-
-    # for i in tqdm(list[0:5]):
-    #     new_url = base_url + i.find('a')['href']
-    #     driver.get(new_url)
-    #     WebDriverWait(driver, 200).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/div[2]/section[2]/div/div[1]/div[2]/div[1]/div[1]/div/module/div[2]/h1")))
-    #     # river.implicitly_wait(100)
-    #     page_html = driver.page_source
-    #     page_soup = bs(page_html, 'html.parser')
-        
-    #     title_1 = page_soup.find('div','hot-news').find('h1','component-title')  
-    #     title = title_1.get_text()                 # 게시물 제목
-    #     title2.append(title)                       # 게시물 제목 리스트에 추가
-
-    #     bdate = page_soup.find('div','hot-news').find('content_header').get_text( )  # 작성일자
-    #     bdate2.append(bdate)                       # 작성일자 리스트에 추가
-
-    #     contents = page_soup.find('div','hot-news').find('content','component-content').get_text( )   # 게시물 요약 내용
-    #     contents2.append(contents)                 # 게시물 내용 리스트에 추가
-
-    #     url = driver.current_url
-    #     url2.append(url)
-        
-    # rows=[]
-    # nums= [num for num in range(1, len(title2)+1)]
-    # for n, d, t, c, u in zip(nums, bdate2, title2, contents2, url2):
-    #     row=[]
-    #     row.append(n)
-    #     row.append(d)
-    #     row.append(t)
-    #     row.append(c)
-    #     row.append(u)
-    #     rows.append(row)
-
-    # data = pd.DataFrame(rows, columns=['번호','날짜','제목','내용','주소'])
-    # #path = "vietnam.csv"
-    # #data.to_csv(path, index=False)
-
-    # ##############################
-
-    # translator = googletrans.Translator()
-    # #vietnam_kor = pd.read_csv('vietnam.csv', encoding="utf8")
-    # #vietnam_eng = pd.read_csv('vietnam.csv', encoding="utf8")
-
-    # result1, result2 = [], []
-
-    # result1=[]
-    # nums= [num for num in range(1, len(title2)+1)]
-    # for n, d, t, c, u in zip(nums, bdate2, title2, contents2, url2):
-    #     result=[]
-
-    #     result.append(n)
-    #     result.append(d)
-    #     # result.append(t)
-    #     word = translator.translate(t, src='vi',dest='ko') #en
-    #     result.append(word.text)
-
-    #     word1 = translator.translate(c, src='vi',dest='en') #en
-    #     result.append(word1.text)
-    #     #result.append(c) 
-    #     result.append(u)
-    #     result1.append(result)
-
-    # # for i in title2:
-    # #     result = translator.translate(i, src='vi',dest='ko') #en
-    # #     result1.append(result.text)
-    
-    # data = pd.DataFrame(result1, columns=['번호','날짜','제목','내용','주소'])
-    # path = "vietnam_kor.csv"
-    # data.to_csv(path, index=False)
+        ret += splited_txt[2] + '년 ' + splited_txt[1] + '월 ' + splited_txt[0] + "일 게시"
+        return ret
 
     ##############################################################
     ## 크롤링 파트
     ##############################################################
 
     #chrome_driver_path = './chromedriver.exe'
-    chrome_driver_path = 'C:\py_temp/chromedriver.exe'
+    chrome_driver_path = '../baekho/chromedriver.exe'
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_argument("disable-blink-features=AutomationControlled") #selenium 엿먹이는 코드 다시 엿먹이기
@@ -440,7 +366,8 @@ def vietnam():
         joined_text = get_text(cont)
 
         title = get_text(li_soup.find('h1','component-title'))
-        date = get_text(li_soup.find('content_header'))
+        date_tmp = get_text(l.find('p','note-layout'))
+        date = make_dates_vi(date_tmp)
         titles.append(title)
         dates.append(date)
         contents.append(joined_text)
@@ -582,7 +509,7 @@ def china():
     # cn_sw = origin_sw + ['china','chinese','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
     vt_sw = origin_sw + ['deputy', 'documents','minister','committee','committe','nguyen','vietnam','customs', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december', 'must']
     model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    data1 = pd.read_excel('../hs_china_eng.xlsx')
+    data1 = pd.read_excel('../hs_china.xlsx')
     data = data1.loc[:,"number":"subject"]
     data['hs_embedding'] = data.apply(lambda row: model.encode(row.subject), axis = 1) #hs품목 
     #data = pd.read_excel('../hscode/hscode.xlsx')
@@ -669,6 +596,18 @@ def china():
             else:
                 ls.remove('none')
         return ls
+    
+    def make_dates_cn(txt):
+        splited_txt = txt.split('-')
+        ret=''
+        if splited_txt[1].startswith('0'):
+            splited_txt[1] = splited_txt[1][1:]
+
+        if splited_txt[2].startswith('0'):
+            splited_txt[2] = splited_txt[2][1:]
+
+        ret += splited_txt[0] + '년 ' + splited_txt[1] + '월 ' + splited_txt[2] + "일 게시"
+        return ret
 
     ##############################################################
     ## 크롤링 파트
@@ -678,7 +617,7 @@ def china():
     from selenium.webdriver.support import expected_conditions as EC
     import time
     #chrome_driver_path = './chromedriver.exe'
-    chrome_driver_path = 'C:\py_temp/chromedriver.exe'
+    chrome_driver_path = '../baekho/chromedriver.exe'
     options = webdriver.ChromeOptions()
 
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
@@ -710,7 +649,8 @@ def china():
     print("크롤링 시작")
     for l in tqdm(lists[0:5]):
         title = l.find('a')['title']
-        date = get_text(l.find('span'))
+        date_tmp = get_text(l.find('span'))
+        date = make_dates_cn(date_tmp)
 
         new_url = base_url + l.find('a')['href']
         link = new_url
@@ -729,6 +669,8 @@ def china():
         dates.append(date)
         contents.append(joined_text)
         links.append(link)
+    
+    driver.close()
         
     ##############################################################
     ## 번역 파트
@@ -974,7 +916,16 @@ def australia():
                     if isinstance(element, LTTextContainer):
                         text += element.get_text().strip().replace('\n', '') + ' '
         return text
-        
+    
+    def make_dates_au(txt):
+        months = ['January','February','March','April','May','June','July','August','September','October','November','December']
+        splited_txt = txt.split(' ')
+        ret = ''
+        for i,m in enumerate(months):
+            if splited_txt[1] == m:
+                ret += splited_txt[2] + '년 ' + str(i+1) + '월 ' + splited_txt[0] + "일 게시"
+        return ret
+
     ######################################################
     ### 크롤링 파트
     ######################################################
@@ -982,7 +933,7 @@ def australia():
     from selenium.webdriver.support import expected_conditions as EC
     import time
 
-    chrome_driver_path = 'C:\py_temp/chromedriver.exe'
+    chrome_driver_path = '../baekho/chromedriver.exe'
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_argument("disable-blink-features=AutomationControlled") #selenium 엿먹이는 코드 다시 엿먹이기
@@ -1009,7 +960,8 @@ def australia():
     for i, t, d in zip(range(5), ts, des_cont):
         title = get_text(t.find_all('td')[1])
         titles.append(title[:-27])
-        dates.append(get_text(d.find_all('div', 'col-sm-3')[0].find('span')))
+        date = get_text(d.find_all('div', 'col-sm-3')[0].find('span'))
+        dates.append(make_dates_au(date))
         file_url = base_url + d.find_all('div', 'col-sm-3')[1].find('a')['href']
         links.append(file_url)
         
@@ -1019,6 +971,7 @@ def australia():
         
         contents.append(get_summ(txt))
         all_contents.append(txt)
+    driver.close()
 
     ######################################################
     ### 번역 파트
@@ -1043,18 +996,21 @@ def australia():
 
     print('keyBERT...')
 
-    from keybert import KeyBERT
+    keywords_list = [' ',' ',' ',' ',' ']
 
-    keywords_list = []
     kw_model = KeyBERT(model=model)
-    for t in contents:
-        k = []
+    for i, t in enumerate(contents):
+        k = ''
         p = rid_sc(t)
         # use_mmr True 후 diversity로 나오는 친구들 다양성 조정
-        keywords = kw_model.extract_keywords(p, keyphrase_ngram_range=(3,3), stop_words=au_sw, top_n=5, use_mmr=True,diversity=0.75)
-        for keyword in keywords:
-            k.append(keyword[0])
-        keywords_list.append(k)
+        # 마찬가지로 stop_words도 국가별로 바꿔주면 됨.
+        keywords = kw_model.extract_keywords(p, keyphrase_ngram_range=(3,3), stop_words=au_sw, top_n=5, use_mmr=True,diversity=0.55)
+        for j, keyword in enumerate(keywords):
+            tmp = keyword[0].replace(' ', '')
+            for jj in range(10-j*2):
+                k += tmp + ' '
+        cloud = WordCloud(prefer_horizontal=1,background_color='white',width=1200, height=200).generate(k)
+        cloud.to_file('./baekho/static/warn/image/'+"호주-au"+str(i+1)+'.png')
 
     ##############################################################
     ## 키워드 hscode 비교 파트
@@ -1134,6 +1090,11 @@ def australia():
     result = pd.DataFrame(rows, columns=['번호','제목','제목(한국어번역)','날짜','내용','내용(영어번역)','키워드 요약','일치 키워드','hs코드','품목','유사도','본문에 진짜 코드','링크','요약본(영어)','요약본(한국어)'])
                                         #번호','제목','제목(한국어번역)','날짜','내용','내용(영어번역)','키워드 요약','일치 키워드','hs코드','품목','유사도','본문에 진짜 코드','링크'
     result.to_csv('./result_au.csv', index=False)
+
+    dir = '../baekho'
+    for f in os.listdir(dir):
+        if f.lower().endswith('.pdf'):
+            os.remove(os.path.join(dir, f))
 
     print('done')
 

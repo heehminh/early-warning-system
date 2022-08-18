@@ -5,6 +5,8 @@ from django.db import models
 class Country(models.Model):
     name = models.CharField(max_length=50)
     name_eng = models.CharField(max_length=60, default="")
+    img_path = models.URLField(default="")
+    txt = models.CharField(max_length=200, default="고시정보 출처 설명")
 
     def __str__(self): # 이 메뉴클래스를 하나의 문자열로 만들어줌
         return self.name
@@ -24,6 +26,8 @@ class HeadOffice(models.Model):
     title = models.CharField(max_length=100) # 관세청 타이틀
     date = models.CharField(max_length=100)
     url = models.URLField()
+    img = models.ImageField(null=True)
+    country = models.CharField(max_length=10, default=" ")
 
     word1_ngram = models.CharField(max_length=100, default="NaN")
     word1_code = models.CharField(max_length=100, default="NaN")

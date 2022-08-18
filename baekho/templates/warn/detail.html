@@ -41,11 +41,6 @@
                 padding-top: 30px;
                 
             }
-            div#info {
-                display: inline-block;
-
-                
-            }         
 
             td, th {
                 text-align: left;
@@ -70,7 +65,7 @@
             
 
     <div>
-    <body >
+    <body>
         
         <nav id="menubar">
             <center>
@@ -93,9 +88,13 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">{{country.name_eng}}</li>
                         </ol>
+                        <p>
+                            {{country.txt}}
+                        </p>
+                        
 
 
-                        <div class="card mb-4", id="info">
+                        <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 최근 고시정보
@@ -138,7 +137,6 @@
                                                     </tbody>         
                                                 
                                             </table>
-                             
                                             <hr>
                                         {% endfor %}
                                     </ul>
