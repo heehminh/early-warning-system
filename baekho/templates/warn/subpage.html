@@ -43,6 +43,8 @@
             function toEn() {
                 document.getElementById("summary").innerHTML = "{{info.txt_eng}}";
             }
+
+            
         </script>
         
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
@@ -50,11 +52,11 @@
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
     </head>
-            
 
     <div>
         <body> 
-            <h3> <a href="{{info.url}}", target="_blank"> {{info.title}} </a> </h3>
+            <h1 class="mt-4">{{country.name}} <a href="url"><img src="{{country.img_path}}" border="0" width="66px" height="44px" style="margin:10px"></a> </h1>
+            <h3> <a width="90%" href="{{info.url}}", target="_blank"> {{info.title}} </a> </h3>
             {{info.date}}  
 
             <div class="row" style="padding-top: 30px">
@@ -66,10 +68,9 @@
                             <input type="button" value="한국어" onclick="toKo()"  style="float:right; margin-right: 20px;"/>
                             
                         </div>
-                        <p id="summary" style="padding:15px; font-size: 24px; overflow: auto; height: 457.5px">
+                        <p id="summary" style="padding:15px; font-size: 24px; overflow: auto;">
                             {{info.txt}} 
                         </p>
-                       
                     </div>
                 </div>
                 <div class="col-xl-6">
@@ -79,7 +80,6 @@
                         </div>
                         <div "card-body">
                             <center> <img src="{{info.img}}" style="padding: 20px" width="90%" border="0" /> </center>
-
                                 
                     </div>
                 </div>
@@ -88,51 +88,64 @@
                         <div class="card-header">
                             <h3 style="padding: 5px"> 관련산업군 </h3>
                         </div>
-                        <div "card-body">
-                            <div style="overflow:auto; height: 250px;">
-                            <table id="datatablesSimple" style="width: 95%; margin-left: auto; margin-right: auto; ">
-                                <br>
-                                <thead>
-                                    <tr><th scope="col">hscode</th><th scope="col">name</th><th scope="col">KSIC10</th><th scope="col">name</th></tr>
-                                </thead>
-                                <tbody>
 
-                                    <colgroup>
-                                        <col style = "width:20%">
-                                        <col style = "width:30%">
-                                        <col style = "width:20%">
-                                        <col style = "width:30%">
-                                    </colgroup>
+                        <div class="card-body">
+                            <div style="overflow:auto; height: 250px;">  
+                                 <table id="datatablesSimple">
+
+                      
+                                        <br>
+
+                                        {% if industry.0.hscode_name != "None" %}
+
+                                        <table width="95%" style="margin-left: auto; margin-right: auto; ">
+
+                                            <thead>
+                                                <tr><th scope="col">hscode</th><th scope="col">name</th><th scope="col">KSIC10</th><th scope="col">name</th></tr>
+                                            </thead>
+
+                                           
+                                        </table>
+
+                                        {% else %} 
+                                        <div style="padding: 30px;">
+                                            <center>
+                                                <h3>이 고시에서 </h3>
+                                                <h3>{{info.country}}의 무역 의존도가 높은 품목이</h3>
+                                                <h3>검출되지 않았습니다.</h3>
+                                            </center> 
+                                        </div>
+                                        
+                                        {% endif %}
+
+                                        {% for i in industry %}
+
+                                        {% if i.hscode_name != "None" %}
+
+                                        <table width="95%" style="margin-left: auto; margin-right: auto; ">
+
+
+                                            <tbody>
+                                                <colgroup>
+                                                    <col style = "width:20%">
+                                                    <col style = "width:30%">
+                                                    <col style = "width:20%">
+                                                    <col style = "width:30%">
+                                                </colgroup>
+
+                                                <tr><td>{{i.hscode}}</td><td>{{i.hscode_name}}</td><td>{{i.KSIC10}}</td><td>{{i.KSIC10_name}}</td></tr> 
+                                                
+                                            </tbody>
+                                            
+                                        </table>
+                                        <hr width="95%" style="margin-left: auto; margin-right: auto; ">
+                                        
+                                        {% else %}
+                                        {% endif %}
+                                        {% endfor %}
                                     
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-                                    <tr><td>100610</td><td>벼</td><td>1123</td><td>종자 및 묘목 생산업</td></tr>
-
-                                </tbody>
-
-                            </table>
+                                </table>
                             </div>
-
-                            <br>
-
-                                
                     </div>
                 </div>
                 

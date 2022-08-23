@@ -12,6 +12,10 @@
         <title>코트라 백호</title>
         <style>
             
+            div {
+                font-family: hzStyleFont;
+            }
+            
             #menubar ul { 
                 margin : 0;
                 padding : 0px;  
@@ -39,8 +43,9 @@
             body {
                 padding: 150px;
                 padding-top: 30px;
-                
+               
             }
+            
 
             td, th {
                 text-align: left;
@@ -56,24 +61,34 @@
                 border-bottom: 1px solid gray;
                 word-break: break-all;
             }
+            
+            
+
 
         </style>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+
+
+        <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" /> -->
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
         <link href={% static "warn/css/styles.css" %} rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
-            
 
     <div>
+    <strong>
     <body>
         
         <nav id="menubar">
             <center>
             <ul>
+                
                 {% for c in countries %}
                     <!-- url 꼬이는거 해결 -->
                     <li><a href="http://127.0.0.1:8000/baekho/menu/{{c.id}}">{{c.name}}</a></li>
+                
                 {% endfor %}
+               
+                
             </ul>
             </center>
         </nav> 
@@ -88,25 +103,28 @@
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active">{{country.name_eng}}</li>
                         </ol>
-                        <p>
-                            {{country.txt}}
-                        </p>
-                        
-
+                            <p>{{country.txt}}</p>
 
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 최근 고시정보
                             </div>
-                            <div class="card-body">
+                            <div  class="card-body">
                                 <table id="datatablesSimple">
-                                    <ul>
-                                        {% for o in opening %}
-                                            <li><a href="{{o.number}}">{{o.title}}</a><div id="right-box">{{o.date}}</div> </li>
+                                    
+                                    {% for o in opening %}
+
+                                            <p style="font-size: 20px;">
+                                            {{o.number}}. <a href="{{o.number}}">{{o.title}}</a><div id="right-box">{{o.date}}</div>
+                                            </p>   
+
                                             <br>
-                                            
-                                            <table width="100%" style="margin-left: auto; margin-right: auto;" >
+                                            <br>
+
+                                            {% if o.word1_ngram != "None" %}
+
+                                            <table width="95%" style="margin-left: auto; margin-right: auto; margin-top: 20px;" >
                                                 <thead>
                                                     <tr><th scope="col">bigram</th><th scope="col">hscode</th><th scope="col">name</th><th scope="col">sim</th></tr>
                                                 </thead>
@@ -137,11 +155,46 @@
                                                     </tbody>         
                                                 
                                             </table>
+                                            
+                                           
+                                            {% else %}
+
+                                            <center> <p style="font-size: 22px; margin-top: 20px; margin-bottom: 10p">이 고시에서 {{country.name}}의 무역 의존도가 높은 품목이 검출되지 않았습니다.</p> </center>
+
+                                            {% endif %}
+
+                                        
+                                            {% if o.korea == True %} 
+                                            <center><p style="font-size: 22px;"> 
+                                                해당 고시에서 <span style="color: red">'한국'</span>이 언급되었습니다.
+                                                주의깊게 볼 필요가 있습니다.
+                                            </p></center>
+                                            
+                                            {% else %}
+
+                                            {% endif %}
+
+
+                                            {% if o.expert == True %} 
+                                            <center><p style="font-size: 22px;"> 
+                                                해당 고시는 <span style="color: red">'수출 규제'</span>와 연관된 내용을 담고 있습니다.
+                                                주의깊게 볼 필요가 있습니다. 
+                                            </p></center>
+                                            {% else %}
+
+                                            {% endif %}
+
+                                    
+
                                             <hr>
+                                        
                                         {% endfor %}
-                                    </ul>
+                                    
+                                    
                                 </table>
-                                
+
+                            
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -168,5 +221,6 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
         <script src="js/datatables-simple-demo.js"></script>
     </body>
+</strong>
 </div>
 </html>

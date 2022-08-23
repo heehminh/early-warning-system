@@ -5,5 +5,5 @@ class BaekhoConfig(AppConfig):
     name = 'baekho'
 
     def ready(self):
-        from . import operator
+        from baekho import operator
         operator.start()

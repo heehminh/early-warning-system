@@ -20,6 +20,26 @@ class Opening(models.Model):
     def __str__(self):
         return self.title
 
+class Industry(models.Model):
+    number = models.IntegerField(default=0)
+    hscode = models.CharField(max_length=10)
+    hscode_name = models.CharField(max_length=50)
+    KSIC10 = models.CharField(max_length=10)
+    KSIC10_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.hscode_name
+
+class Compare(models.Model):
+    last_china = models.CharField(max_length=200)
+    last_usa = models.CharField(max_length=200)
+    last_japan = models.CharField(max_length=200)
+    last_vietnam = models.CharField(max_length=200)
+    last_australia = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.last_china
+
 # 중국
 class HeadOffice(models.Model):
     number = models.IntegerField(default=0)
@@ -28,7 +48,10 @@ class HeadOffice(models.Model):
     url = models.URLField()
     img = models.ImageField(null=True)
     country = models.CharField(max_length=10, default=" ")
-
+    country_eng = models.CharField(max_length=10, default=" ")
+    korea = models.BooleanField(default=False)
+    export = models.BooleanField(default=False)
+    
     word1_ngram = models.CharField(max_length=100, default="NaN")
     word1_code = models.CharField(max_length=100, default="NaN")
     word1_name = models.CharField(max_length=100, default="NaN")
@@ -54,88 +77,3 @@ class HeadOffice(models.Model):
 
     def __str__(self):
         return self.title
-
-# # 중국
-# class ChinaModel(models.Model):
-#     title = models.CharField(max_length=100) # 관세청 타이틀
-#     date = models.DateField()
-#     url = models.URLField()
-
-#     word1_ngram = models.CharField(max_length=100, default="NaN")
-#     word1_code = models.CharField(max_length=100, default="NaN")
-#     word1_name = models.CharField(max_length=100, default="NaN")
-#     word1_sim = models.CharField(max_length=100, default="NaN")
-
-#     word2_ngram = models.CharField(max_length=100, default="NaN")
-#     word2_code = models.CharField(max_length=100, default="NaN")
-#     word2_name = models.CharField(max_length=100, default="NaN")
-#     word2_sim = models.CharField(max_length=100, default="NaN")
-
-#     word3_ngram = models.CharField(max_length=100, default="NaN")
-#     word3_code = models.CharField(max_length=100, default="NaN")
-#     word3_name = models.CharField(max_length=100, default="NaN")
-#     word3_sim = models.CharField(max_length=100, default="NaN")
-
-#     word4_ngram = models.CharField(max_length=100, default="NaN")
-#     word4_code = models.CharField(max_length=100, default="NaN")
-#     word4_name = models.CharField(max_length=100, default="NaN")
-#     word4_sim = models.CharField(max_length=100, default="NaN")
-    
-#     def __str__(self):
-#         return self.title
-
-# # 미국 
-# class USAModel(models.Model):
-#     title = models.CharField(max_length=100) # 관세청 타이틀
-#     date = models.DateField()
-#     url = models.URLField()
-    
-#     def __str__(self):
-#         return self.title
-
-# # 일본
-# class JapanModel(models.Model):
-#     title = models.CharField(max_length=100) # 관세청 타이틀
-#     date = models.DateField()
-#     url = models.URLField()
-    
-#     def __str__(self):
-#         return self.title
-
-# # 베트남
-# class VtModel(models.Model):
-#     title = models.CharField(max_length=100) # 관세청 타이틀
-#     date = models.CharField(max_length=50)
-#     url = models.URLField()
-
-#     word1_ngram = models.CharField(max_length=100, default="NaN")
-#     word1_code = models.CharField(max_length=100, default="NaN")
-#     word1_name = models.CharField(max_length=100, default="NaN")
-#     word1_sim = models.CharField(max_length=100, default="NaN")
-
-#     word2_ngram = models.CharField(max_length=100, default="NaN")
-#     word2_code = models.CharField(max_length=100, default="NaN")
-#     word2_name = models.CharField(max_length=100, default="NaN")
-#     word2_sim = models.CharField(max_length=100, default="NaN")
-
-#     word3_ngram = models.CharField(max_length=100, default="NaN")
-#     word3_code = models.CharField(max_length=100, default="NaN")
-#     word3_name = models.CharField(max_length=100, default="NaN")
-#     word3_sim = models.CharField(max_length=100, default="NaN")
-
-#     word4_ngram = models.CharField(max_length=100, default="NaN")
-#     word4_code = models.CharField(max_length=100, default="NaN")
-#     word4_name = models.CharField(max_length=100, default="NaN")
-#     word4_sim = models.CharField(max_length=100, default="NaN")
- 
-#     def __str__(self):
-#         return self.title
-
-# # 호주 
-# class AuModel(models.Model):
-#     title = models.CharField(max_length=100) # 관세청 타이틀
-#     date = models.DateField()
-#     url = models.URLField()
-    
-#     def __str__(self):
-#         return self.title
