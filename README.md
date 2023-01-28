@@ -1,4 +1,6 @@
 # KOTRA 해외 관세청 고시 정보 분석 및 경보 서비스
+https://vivacious-pencil-435.notion.site/KOTRA-EWS-7273896c2532486b8218aeee4b5ab2a4
+
 전세계 공급망 교란으로 인해 수출입 규제 정보 중요성 증대 -> 공급망 위기에 선제적 대응의 필요성 대두
 
 # 알고리즘 개괄
